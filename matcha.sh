@@ -69,21 +69,10 @@ MAP_DIR="$TF_DIR/maps"
 MATCHA_DL_URL="https://fastdl.avanlcy.hk"
 SERVEME_DL_URL="https://fastdl.serveme.tf"
 
-if [ -f "$MAP_FILE" ]; then
-    if [[ ! -f "$MAP_FILE" ]]; then
-            echo "MAP_FILE NOT FOUND, ${MAP_FILE}"
-            exit 1
+if ! wget -nv -P "$MAP_DIR" "${MATCHA_DL_URL}/maps/cp_process_f12.bsp"; then
+    echo "cp_process_f12 not found on ${MATCHA_DL_URL}, trying ${SERVEME_DL_URL}..."
+    if ! wget -nv -P "$MAP_DIR" "${SERVEME_DL_URL}/maps/cp_process_f12.bsp"; then
+        echo "Failed to download cp_process_f12."
+        exit 1
     fi
-
-    while IFS= read -r map || [ -n "$map" ]; do
-        if ! wget -nv -P "$MAP_DIR" "${MATCHA_DL_URL}/maps/${map}.bsp"; then
-            echo "${map} not found on ${MATCHA_DL_URL}, trying ${SERVEME_DL_URL}..."
-            if ! wget -nv -P "$MAP_DIR" "${SERVEME_DL_URL}/maps/${map}.bsp"; then
-                echo "Failed to download ${map}."
-            fi
-        fi
-    done < "$MAP_FILE"
-else
-    echo "No maps.txt detected, terminating build process."
-    exit 1
 fi

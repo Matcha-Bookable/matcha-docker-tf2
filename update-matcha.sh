@@ -28,38 +28,3 @@ git pull
 
 cp -rT $MATCHA_PLUGINS_REPO $SM_DIR
 cp -rT $MATCHA_CFG_REPO $TF_CFG_DIR
-
-# Maps
-MAP_FILE="$TF_CFG_DIR/comp/maps.txt"
-MAP_DIR="$TF_DIR/maps"
-
-# DLs
-MATCHA_DL_URL="https://fastdl.avanlcy.hk"
-SERVEME_DL_URL="https://fastdl.serveme.tf"
-
-# If map list were updated after image was built, we need to check the list with the map directory
-if [ -f "$MAP_FILE" ]; then
-    while IFS= read -r map || [ -n "$map" ]; do
-        map_file="$MAP_DIR/$map.bsp"
-        if [ ! -f "$map_file" ]; then
-            echo "$map not found, downloading from ${MATCHA_DL_URL}..."
-            if ! wget -nv -P "$MAP_DIR" "${MATCHA_DL_URL}/maps/${map}.bsp"; then
-                echo "${map} not found on ${MATCHA_DL_URL}, trying ${SERVEME_DL_URL}..."
-                if ! wget -nv -P "$MAP_DIR" "${SERVEME_DL_URL}/maps/${map}.bsp"; then
-                    echo "Failed to download ${map}."
-                fi
-            fi
-        fi
-    done < "$MAP_FILE"
-
-    for map_file in "$MAP_DIR"/*.bsp; do
-        map_name=$(basename "$map_file" .bsp)
-        if ! grep -q "^$map_name$" "$MAP_FILE"; then
-            echo "$map_name not listed, removing..."
-            rm -f "$map_file"
-        fi
-    done
-
-else
-    echo "No maps.txt file found, skipping map updater"
-fi
