@@ -12,7 +12,8 @@ The image gets built by Github's Action and pushes the image to Docker Hub which
 - [x] <s>Google Cloud: Artifact Registry
 - [x] Amazon Web Services: Elastic Container Registry
 - [ ] Microsoft Azure: Container Registry
-- [ ] Alibaba Cloud: Container Registry</s>
+- [ ] Alibaba Cloud: Container Registry
+</s>
 
 ## Additional Notes
 
