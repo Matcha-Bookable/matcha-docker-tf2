@@ -35,8 +35,8 @@ SM_TRANSLATIONS_DIR="$SM_DIR/translations"
 
 # Customs
 ROOT_MATCHA_REPO="$HOME/hlserver/matcha"
-MATCHA_PLUGINS_REPO="$ROOT_MATCHA_REPO/matcha-tf2-plugins"
-MATCHA_CFG_REPO="$ROOT_MATCHA_REPO/matcha-tf2-cfgs"
+MATCHA_PLUGINS_REPO="$ROOT_MATCHA_REPO/matcha-plugins-tf2"
+MATCHA_CFG_REPO="$ROOT_MATCHA_REPO/matcha-cfgs-tf2"
 
 # Repository
 GITHUB_USER="github-actions[bot]"
