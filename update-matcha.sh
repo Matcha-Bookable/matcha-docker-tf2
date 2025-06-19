@@ -39,11 +39,11 @@ SERVEME_DL_URL="https://fastdl.serveme.tf"
 
 # If map list were updated after image was built, we need to check the list with the map directory
 if [ -f "$MAP_FILE" ]; then
-    while IFS= read -r map; do
+    while IFS= read -r map || [ -n "$map" ]; do
         map_file="$MAP_DIR/$map.bsp"
         if [ ! -f "$map_file" ]; then
             echo "$map not found, downloading from ${MATCHA_DL_URL}..."
-            if ! wget -nv -P "$MAP_DIR" "${MATCHA_DL_URL}/maps/${line}.bsp"; then
+            if ! wget -nv -P "$MAP_DIR" "${MATCHA_DL_URL}/maps/${map}.bsp"; then
                 echo "${map} not found on ${MATCHA_DL_URL}, trying ${SERVEME_DL_URL}..."
                 if ! wget -nv -P "$MAP_DIR" "${SERVEME_DL_URL}/maps/${map}.bsp"; then
                     echo "Failed to download ${map}."
