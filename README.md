@@ -1,13 +1,18 @@
 # Matcha TF2 Dockerfile
 
 This repository contains the source file of Matcha Bookable's Dockerfile and their build scripts, however the plugins and cfgs will remain hidden at this time.
-The image gets built by Github's Action and pushes the image to the major cloud provider's container registries.
+The image gets built by Github's Action and pushes the image to Docker Hub which will be pulled by the on-demand instances. 
 
 ### Supported Registries
-- [x] Google Cloud: Artifact Registry
+> I have originally planned to push to all major cloud computing providers' private registries. However, the costs incurred are currently not worth the compensation of simply faster pull time.
+
+- [x] Docker Hub: Private Repository
+
+#### Original Registries
+- [x] <s>Google Cloud: Artifact Registry
 - [x] Amazon Web Services: Elastic Container Registry
 - [ ] Microsoft Azure: Container Registry
-- [ ] Alibaba Cloud: Container Registry
+- [ ] Alibaba Cloud: Container Registry</s>
 
 ## Additional Notes
 

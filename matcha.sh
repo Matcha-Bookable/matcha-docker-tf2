@@ -76,6 +76,11 @@ if [ -f "$MAP_FILE" ]; then
     fi
 
     while IFS= read -r map; do
+            # Bash seems to be inconsistent when dealing with the second mge map, we have to add a dummy line (lol)
+            if [[ "$map" == "dummy" ]]; then
+                continue
+            fi
+
             if ! wget -nv -P "$MAP_DIR" "${MATCHA_DL_URL}/maps/${map}.bsp"; then
                 echo "${map} not found on ${MATCHA_DL_URL}, trying ${SERVEME_DL_URL}..."
                 if ! wget -nv -P "$MAP_DIR" "${SERVEME_DL_URL}/maps/${map}.bsp"; then
