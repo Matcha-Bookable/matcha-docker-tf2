@@ -20,4 +20,4 @@ EXPOSE 27015/udp 27015/tcp 27021/tcp 27020/udp
 WORKDIR /home/$USER/hlserver
 
 ENTRYPOINT ["./tf.sh"]
-CMD ["+sv_pure", "1", "+map", "cp_process_f12", "+maxplayers", "24", "-enablefakeip"]
+CMD ["+sv_pure", "1", "+map", "cp_process_f12", "+servercfgfile", "server.cfg", "+maxplayers", "24", "-enablefakeip"]
