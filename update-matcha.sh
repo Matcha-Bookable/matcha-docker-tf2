@@ -32,8 +32,8 @@ cp -rT $MATCHA_CFG_REPO $TF_CFG_DIR
 
 #
 #
-#   Compliance to ozfortress
-#   This section 
+#                               Compliance to ozfortress
+#   This section will check the ISO3166-1 alpha-3 or IATA code of the instance name
 #
 # 
 IPV4=$(curl -s https://api.ipify.org)
