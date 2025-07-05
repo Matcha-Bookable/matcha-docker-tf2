@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 cd $HOME/hlserver
 
 ./update.sh
@@ -17,7 +17,7 @@ faketty() {
     tmp=$(mktemp)
     [ "$tmp" ] || return 99
     cmd="$(printf '%q ' "$@")"'; echo $? > '$tmp
-    script -qfc "/bin/sh -c $(printf "%q " "$cmd")" /dev/null
+    script -qfc "/bin/bash -c $(printf "%q " "$cmd")" /dev/null
     [ -s $tmp ] || return 99
     err=$(cat $tmp)
     rm -f $tmp

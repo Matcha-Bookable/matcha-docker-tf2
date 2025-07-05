@@ -30,6 +30,8 @@ jobs:
         run: |
           docker build \
             --build-arg GH_PAT=${{ secrets.GH_PAT }} \
+            --build-arg MATCHA_API_KEY=${{ secrets.MATCHA_API_KEY }} \
+            --build-arg MATCHA_API_DETAILS_URL=${{ secrets.MATCHA_API_DETAILS_URL }} \
             -t $DOCKERHUB_REPO:latest .
 
       - name: Push Docker image to Docker Hub
