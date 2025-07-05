@@ -28,3 +28,39 @@ git pull
 
 cp -rT $MATCHA_PLUGINS_REPO $SM_DIR
 cp -rT $MATCHA_CFG_REPO $TF_CFG_DIR
+
+
+#
+#
+#   Compliance to ozfortress
+#   This section 
+#
+# 
+IPV4=$(curl -s https://api.ipify.org)
+
+if [ -z "$MATCHA_API_KEY" ]; then
+    echo "MATCHA_API_KEY environment variable not set. Exiting."
+    exit 1
+fi
+
+# Extract instance prefix
+RESPONSE=$(curl -s -X GET \
+  -H "Authorization: Bearer $MATCHA_API_KEY" \
+  "$MATCHA_API_DETAILS_URL/$IPV4")
+
+INSTANCE=$(echo "$RESPONSE" | grep -o '"instance":"[^"]*"' | cut -d'"' -f4)
+INSTANCE_PREFIX=$(echo "$INSTANCE" | cut -c1-3)
+
+case "$INSTANCE_PREFIX" in
+    syd|mel|per|nzl)
+        echo "AU/NZ region detected ($INSTANCE_PREFIX). Running compliance script..."
+        cd $SM_DIR/plugins
+        
+        if [ ! -f "ozf_bans.smx" ]; then
+            wget -O ozf_bans.smx https://github.com/ozfortress/ozf-bans-enforcement/raw/refs/heads/main/plugins/ozf_bans.smx
+        fi
+        ;;
+    *)
+        echo "Non-AU/NZ region detected ($INSTANCE_PREFIX). Skipping compliance script."
+        ;;
+esac

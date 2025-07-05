@@ -24,6 +24,7 @@ The image gets built by Github's Action and pushes the image to Docker Hub which
 - [spiretf/docker-tf2-server](https://codeberg.org/spire/docker-tf2-server)
 - [spiretf/docker-comp-server](https://codeberg.org/spire/docker-comp-server)
 - [jsza/docker-tempus-srcds](https://github.com/jsza/docker-tempus-srcds)
+- [melkortf/tf2-servers](https://github.com/melkortf/tf2-servers)
 - [dalegaard/srctvplus](https://github.com/dalegaard/srctvplus)
 
 ### License
