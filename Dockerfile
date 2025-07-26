@@ -1,6 +1,14 @@
 FROM ubuntu:22.04
 LABEL maintainer="avan"
 
+ARG GH_PAT
+ARG MATCHA_API_KEY
+ARG MATCHA_API_DETAILS_URL
+
+ENV GH_PAT=${GH_PAT} \
+    MATCHA_API_KEY=${MATCHA_API_KEY} \
+    MATCHA_API_DETAILS_URL=${MATCHA_API_DETAILS_URL}
+
 RUN echo steam steam/question select "I AGREE" | debconf-set-selections \
 	&& echo steam steam/license note '' | debconf-set-selections \
 	&& apt-get -y update \
@@ -42,24 +50,6 @@ RUN mkdir -p $SERVER/tf2 \
     && $SERVER/maps.sh \
     && $SERVER/sourcemod.sh \
     && $SERVER/matcha.sh
-
-# ------------------ STOCK SETUP ENDS -------------------
-
-USER root
-
-# Build arguments and environment variables
-ARG GH_PAT
-ARG MATCHA_API_KEY
-ARG MATCHA_API_DETAILS_URL
-
-ENV GH_PAT=${GH_PAT} \
-    MATCHA_API_KEY=${MATCHA_API_KEY} \
-    MATCHA_API_DETAILS_URL=${MATCHA_API_DETAILS_URL}
-
-# Install dependencies and copy scripts
-RUN apt-get update && apt-get install -y git curl
-
-USER tf2
 
 EXPOSE 27015/udp 27015/tcp 27021/tcp 27020/udp
 
