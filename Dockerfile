@@ -4,6 +4,7 @@ LABEL maintainer="avan"
 RUN echo steam steam/question select "I AGREE" | debconf-set-selections \
 	&& echo steam steam/license note '' | debconf-set-selections \
 	&& apt-get -y update \
+    && apt-get -y install git curl \
 	&& apt-get -y install software-properties-common \
 	&& add-apt-repository multiverse \
 	&& dpkg --add-architecture i386 \
