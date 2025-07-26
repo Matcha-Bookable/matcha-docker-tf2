@@ -3,8 +3,6 @@ set -e
 
 cd $HOME/hlserver/tf2/tf/maps
 
-rm *.bsp # Clear all maps
-
 maps=()
 
 for map in ${maps[@]}; do

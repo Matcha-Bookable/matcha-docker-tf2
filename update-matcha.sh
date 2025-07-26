@@ -29,6 +29,9 @@ git pull
 cp -rT $MATCHA_PLUGINS_REPO $SM_DIR
 cp -rT $MATCHA_CFG_REPO $TF_CFG_DIR
 
+# Matcha maplist
+wget -O $TF_CFG_DIR/comp/maps.txt https://fastdl.avanlcy.hk/_maps.txt
+
 
 #
 #
