@@ -5,9 +5,9 @@ ARG GH_PAT
 ARG MATCHA_API_KEY
 ARG MATCHA_API_DETAILS_URL
 
-ENV GH_PAT=${GH_PAT} \
-    MATCHA_API_KEY=${MATCHA_API_KEY} \
-    MATCHA_API_DETAILS_URL=${MATCHA_API_DETAILS_URL}
+ENV GH_PAT=${GH_PAT}
+ENV MATCHA_API_KEY=${MATCHA_API_KEY}
+ENV MATCHA_API_DETAILS_URL=${MATCHA_API_DETAILS_URL}
 
 RUN echo steam steam/question select "I AGREE" | debconf-set-selections \
 	&& echo steam steam/license note '' | debconf-set-selections \
@@ -30,9 +30,9 @@ RUN echo steam steam/question select "I AGREE" | debconf-set-selections \
 
 USER tf2
 
-ENV USER tf2
-ENV HOME /home/$USER
-ENV SERVER $HOME/hlserver
+ENV USER=tf2
+ENV HOME=/home/$USER
+ENV SERVER=$HOME/hlserver
 
 ADD --chown=tf2:tf2 tf2_ds.txt update.sh matcha.sh update-matcha.sh maps.sh sourcemod.sh clean.sh tf.sh $SERVER/
 RUN chmod +x $SERVER/update.sh \

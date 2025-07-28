@@ -6,6 +6,8 @@ on:
       - 'Dockerfile'
       - '*.sh'
   workflow_dispatch:
+  repository_dispatch:
+    types: [build]  
 
 env:
   DOCKERHUB_REPO: ${{ vars.DOCKERHUB_REPO }}
