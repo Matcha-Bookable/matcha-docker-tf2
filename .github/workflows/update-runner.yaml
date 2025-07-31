@@ -53,6 +53,19 @@ jobs:
           path: build-id.txt
           key: tf2-build-${{ github.repository }}-${{ github.run_id }}
 
+      - name: Clean old caches
+        if: always()
+        run: |
+          # Get list of caches and delete old ones
+          gh cache list --repo ${{ github.repository }} --key "tf2-build-" --json key,id | \
+          jq -r '.[] | select(.key != "tf2-build-${{ github.repository }}-${{ github.run_id }}") | .id' | \
+          while read cache_id; do
+            echo "Deleting cache ID: $cache_id"
+            gh cache delete $cache_id --repo ${{ github.repository }} || true
+          done
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+
   build-tf2-comp:
     needs: check-tf2-build
     if: needs.check-tf2-build.outputs.changed == 'true'
