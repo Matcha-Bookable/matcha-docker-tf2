@@ -3,6 +3,12 @@
 # This shell script contains the modified base for Matcha Bookable's Image
 # To actually run the image, you will need RO PAT from Matcha Bookable
 
+echo "=== MATCHA-BUILD.SH STARTED ==="
+echo "Current user: $(whoami)"
+echo "Current directory: $(pwd)"
+echo "HOME directory: $HOME"
+date
+
 set -e
 
 TF_DIR="$HOME/hlserver/tf2/tf"
@@ -16,17 +22,15 @@ ROOT_MATCHA_REPO="$HOME/hlserver/matcha"
 MATCHA_PLUGINS_REPO="$ROOT_MATCHA_REPO/matcha-plugins-tf2"
 MATCHA_CFG_REPO="$ROOT_MATCHA_REPO/matcha-cfgs-tf2"
 
-# Repository
-GITHUB_USER="github-actions[bot]"
-GIT_URL_PLUGINS="https://${GITHUB_USER}:${GH_PAT}@github.com/Matcha-Bookable/matcha-plugins-tf2.git"
-GIT_URL_CFGS="https://${GITHUB_USER}:${GH_PAT}@github.com/Matcha-Bookable/matcha-cfgs-tf2.git"
-
 ###################         
 #     Plugins     #
 ###################
 
+echo "=== Starting plugin installations ==="
+
 # --------------- #
 # SourcebansPP
+echo "Installing SourcebansPP..."
 cd $HOME/hlserver/tf2/tf
 wget -nv https://github.com/sbpp/sourcebans-pp/releases/download/Plugins-Latest/sourcebans-pp-Plugins-Latest.tar.gz
 tar -xf sourcebans-pp-Plugins-Latest.tar.gz --strip-components 1
@@ -113,8 +117,11 @@ rm sm-neocurl.zip
 
 
 # CLEAN UP
+echo "=== Cleaning up Directories ==="
 rm -rf $HOME/hlserver/tf2/tf/addons/sourcemod/scripting/*
 rm -rf $HOME/hlserver/tf2/tf/addons/sourcemod/scriptings/*
+
+date
 
 rm -f $HOME/hlserver/tf2/tf/addons/sourcemod/plugins/nextmap.smx \
 	  $HOME/hlserver/tf2/tf/addons/sourcemod/plugins/funcommands.smx \

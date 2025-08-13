@@ -1,10 +1,5 @@
 #!/bin/bash
 
-if [ -z "$GH_PAT" ] || [ -z "$MATCHA_API_KEY" ]; then
-    echo "GH_PAT or MATCHA_API_KEY environment variable not set. Exiting."
-    exit 1
-fi
-
 # Repository
 GITHUB_USER="github-actions[bot]"
 GIT_URL_PLUGINS="https://${GITHUB_USER}:${GH_PAT}@github.com/Matcha-Bookable/matcha-plugins-tf2.git"
