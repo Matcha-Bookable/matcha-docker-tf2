@@ -13,9 +13,16 @@ ROOT_MATCHA_REPO="$HOME/hlserver/matcha"
 MATCHA_PLUGINS_REPO="$ROOT_MATCHA_REPO/matcha-plugins-tf2"
 MATCHA_CFG_REPO="$ROOT_MATCHA_REPO/matcha-cfgs-tf2"
 
-if [ -z "$GH_PAT" ]; then
-    echo "GH_PAT environment variable not set. Exiting."
-    exit 1
+# Pull all matcha's plugins
+if [ ! -d $MATCHA_PLUGINS_REPO ]; then
+    mkdir -p $MATCHA_PLUGINS_REPO
+    git clone "$GIT_URL_PLUGINS" $MATCHA_PLUGINS_REPO
+fi
+
+# Pull all matcha's cfgs
+if [ ! -d $MATCHA_CFG_REPO ]; then
+    mkdir -p $MATCHA_CFG_REPO
+    git clone "$GIT_URL_CFGS" $MATCHA_CFG_REPO
 fi
 
 cd "$MATCHA_PLUGINS_REPO"
@@ -32,7 +39,6 @@ cp -rT $MATCHA_CFG_REPO $TF_CFG_DIR
 # Matcha maplist
 wget -O $TF_CFG_DIR/comp/maps.txt https://fastdl.avanlcy.hk/_maps.txt
 
-
 #
 #
 #                               Compliance to ozfortress
@@ -41,15 +47,10 @@ wget -O $TF_CFG_DIR/comp/maps.txt https://fastdl.avanlcy.hk/_maps.txt
 # 
 IPV4=$(curl -s https://api.ipify.org)
 
-if [ -z "$MATCHA_API_KEY" ]; then
-    echo "MATCHA_API_KEY environment variable not set. Exiting."
-    exit 1
-fi
-
 # Extract instance prefix
 RESPONSE=$(curl -s -X GET \
   -H "Authorization: Bearer $MATCHA_API_KEY" \
-  "$MATCHA_API_DETAILS_URL/$IPV4")
+  "https://api.matcha-bookable.com/v1/instance/details/$IPV4")
 
 INSTANCE=$(echo "$RESPONSE" | grep -o '"instance":"[^"]*"' | cut -d'"' -f4)
 INSTANCE_PREFIX=$(echo "$INSTANCE" | cut -c1-3)
