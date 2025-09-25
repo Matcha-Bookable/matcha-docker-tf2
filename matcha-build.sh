@@ -17,6 +17,18 @@ TF_DIR="$HOME/hlserver/tf2/tf"
 mkdir $TF_DIR/demos
 TF_CFG_DIR="$TF_DIR/cfg"
 
+# (25/09/2025 - md5sum is inconsistent for chillypunch using spiretf's mapdownloader)
+MATCHA_DL_URL="https://fastdl.avanlcy.hk"
+SERVEME_DL_URL="https://fastdl.serveme.tf"
+
+if ! wget -nv -P "$TF_DIR/maps" "${MATCHA_DL_URL}/maps/mge_chillypunch_final4_fix2.bsp"; then
+    echo "mge_chillypunch_final4_fix2 not found on ${MATCHA_DL_URL}, trying ${SERVEME_DL_URL}..."
+    if ! wget -nv -P "$TF_DIR/maps" "${SERVEME_DL_URL}/maps/mge_chillypunch_final4_fix2.bsp"; then
+        echo "Failed to download mge_chillypunch_final4_fix2."
+        exit 1
+    fi
+fi
+
 # Customs
 ROOT_MATCHA_REPO="$HOME/hlserver/matcha"
 MATCHA_PLUGINS_REPO="$ROOT_MATCHA_REPO/matcha-plugins-tf2"
