@@ -105,8 +105,8 @@ wget -nv https://github.com/demostf/plugin/raw/master/demostf.smx
 # ProperPregame (AJagger/ProperPregame)
 wget -nv https://github.com/AJagger/ProperPregame/raw/master/addons/sourcemod/plugins/properpregame.smx
 
-# MapDownloader (spiretf/mapdownloader)
-wget -nv https://github.com/spiretf/mapdownloader/raw/master/plugin/mapdownloader.smx
+# MapDownloader (modified from spiretf/mapdownloader)
+wget -nv https://github.com/Matcha-Bookable/sourcepawn-mapdownloader/raw/main/plugins/mapdownloader.smx
 
 # WhitelistDownloader (spiretf/sm_whitelist)
 wget -nv https://github.com/spiretf/sm_whitelist/raw/master/plugin/whitelisttf.smx
