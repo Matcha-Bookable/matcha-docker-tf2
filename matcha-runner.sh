@@ -42,6 +42,8 @@ cd $SM_DIR/plugins
 # Matcha-host
 wget -nv https://github.com/Matcha-Bookable/sourcepawn-matcha-host/raw/main/plugins/matcha-host.smx
 
+chmod 0664 *.smx
+
 # Matcha maplist (for mapdownloader)
 wget -O $TF_CFG_DIR/comp/maps.txt https://fastdl.avanlcy.hk/_maps.txt
 
