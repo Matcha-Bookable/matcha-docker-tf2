@@ -99,6 +99,7 @@ wget -nv https://github.com/Matcha-Bookable/sourcepawn-mapdownloader/raw/main/pl
 # WhitelistDownloader (spiretf/sm_whitelist)
 wget -nv https://github.com/spiretf/sm_whitelist/raw/master/plugin/whitelisttf.smx
 
+
 chmod 0664 *.smx
 
 # Dependecies

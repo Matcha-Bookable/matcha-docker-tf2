@@ -36,7 +36,13 @@ git pull
 cp -rT $MATCHA_PLUGINS_REPO $SM_DIR
 cp -rT $MATCHA_CFG_REPO $TF_CFG_DIR
 
-# Matcha maplist
+# Dynamic pull (plugins that updates frequently)
+cd $SM_DIR/plugins
+
+# Matcha-host
+wget -nv https://github.com/Matcha-Bookable/sourcepawn-matcha-host/raw/main/plugins/matcha-host.smx
+
+# Matcha maplist (for mapdownloader)
 wget -O $TF_CFG_DIR/comp/maps.txt https://fastdl.avanlcy.hk/_maps.txt
 
 #
