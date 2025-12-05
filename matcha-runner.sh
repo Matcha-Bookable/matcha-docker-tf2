@@ -63,6 +63,8 @@ RESPONSE=$(curl -s -X GET \
 INSTANCE=$(echo "$RESPONSE" | grep -o '"instance":"[^"]*"' | cut -d'"' -f4)
 INSTANCE_PREFIX=$(echo "$INSTANCE" | cut -c1-3)
 
+echo "Exported booking details: BookingID=$BOOKINGID, Instance=$INSTANCE, IPv4=$IPV4"
+
 case "$INSTANCE_PREFIX" in
     syd|mel|per|nzl)
         echo "AU/NZ region detected ($INSTANCE_PREFIX). Running compliance script..."
@@ -76,3 +78,6 @@ case "$INSTANCE_PREFIX" in
         echo "Non-AU/NZ region detected ($INSTANCE_PREFIX). Skipping compliance script."
         ;;
 esac
+
+# Save the bookingID so we can use it in termination
+export BOOKINGID=$(echo "$RESPONSE" | grep -o '"bookingid":"[^"]*"' | cut -d'"' -f4)
