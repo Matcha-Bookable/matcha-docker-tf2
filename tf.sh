@@ -24,6 +24,6 @@ trapped() {
     exit 0
 }
 
-trap "trapped" SIGINT SIGTERM
+trap trapped SIGTERM
 
 tf2/srcds_run -game tf -steam_dir ~/hlserver -steamcmd_script ~/hlserver/tf2_ds.txt $@
