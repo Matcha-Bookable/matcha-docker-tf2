@@ -1,10 +1,14 @@
 FROM ghcr.io/matcha-bookable/docker-tf2-server:latest
 LABEL maintainer="avan"
 
+USER root
+RUN apt-get install -y python3 curl
+
+USER tf2
 ENV GH_PAT=""
 ENV MATCHA_API_KEY=""
 
-ADD --chown=tf2:tf2 ./sourcemod.sh ./matcha-build.sh ./matcha-runner.sh ./tf.sh $SERVER/
+ADD --chown=tf2:tf2 ./sourcemod.sh ./matcha-build.sh ./matcha-runner.sh ./webhook_server.py ./tf.sh $SERVER/
 
 RUN chmod +x $SERVER/sourcemod.sh \
 	$SERVER/matcha-build.sh \
@@ -17,7 +21,7 @@ RUN echo "=== Starting sourcemod.sh ===" && \
 	$SERVER/matcha-build.sh && \
 	echo "=== Completed ==="
 
-EXPOSE 27015/udp 27015/tcp 27021/tcp 27020/udp
+EXPOSE 27015/udp 27015/tcp 27021/tcp 27020/udp 8080/tcp
 
 WORKDIR /home/$USER/hlserver
 
