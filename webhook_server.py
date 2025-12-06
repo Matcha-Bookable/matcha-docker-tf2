@@ -8,16 +8,16 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         auth = self.headers.get('Authorization', '')
         
-        if self.path == '/upload-storage' and auth == f"Bearer {os.environ.get("MATCHA_API_KEY")}":
+        if self.path == '/upload-storage' and auth == f"Bearer {os.environ.get('MATCHA_API_KEY')}":
             os.chdir('/home/tf2/hlserver/tf2/tf/logs')
             for f in os.listdir("."):
                 if os.path.isfile(f):
                     subprocess.run([
                         "curl", "-s", "-X", "POST",
                         "https://storage.matcha-bookable.com/api/logs",
-                        "-F", f"bookingID={int(os.environ.get("BOOKINGID"))}",
+                        "-F", f"bookingID={int(os.environ.get('BOOKINGID'))}",
                         "-F", f"file=@{f}",
-                        "-H", f"Authorization: Bearer {os.environ.get("MATCHA_API_KEY")}"
+                        "-H", f"Authorization: Bearer {os.environ.get('MATCHA_API_KEY')}"
                     ])
             
             self.send_response(200)
