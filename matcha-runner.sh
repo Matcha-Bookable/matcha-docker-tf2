@@ -83,4 +83,4 @@ echo "BookingID: $BOOKINGID"
 echo "Instance: $INSTANCE"
 echo "IPV4: $IPV4"
 
-python3 $HOME/hlserver/webhook_server.py "$BOOKINGID" "$MATCHA_API_KEY" &
+python3 $HOME/hlserver/webhook_server.py "$BOOKINGID" "$MATCHA_API_KEY" >> $HOME/hlserver/webhook.log 2>&1 &
