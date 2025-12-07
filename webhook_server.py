@@ -9,7 +9,7 @@ import requests
 
 BOOKINGID = int(sys.argv[1])
 MATCHA_API_KEY = sys.argv[2]
-DEMO_PARSER_PATH = "/home/tf2/hlserver/demo_parser"
+DEMO_PARSER_PATH = "/home/tf2/hlserver/parse_demo"
 DEMO_DIR = "/home/tf2/hlserver/tf2/tf/demos"
 
 def parse_demo(demo_path):
