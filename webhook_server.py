@@ -4,26 +4,30 @@ import subprocess
 import os
 import sys
 
+BOOKINGID= int(os.environ.get('BOOKINGID'))
+MATCHA_API_KEY = os.environ.get('MATCHA_API_KEY')
+
 class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         auth = self.headers.get('Authorization', '')
         
-        if self.path == '/upload-storage' and auth == f"Bearer {os.environ.get('MATCHA_API_KEY')}":
+        if self.path == '/upload-storage' and auth == f"Bearer {MATCHA_API_KEY}":
             os.chdir('/home/tf2/hlserver/tf2/tf/logs')
             for f in os.listdir("."):
                 if os.path.isfile(f):
                     subprocess.run([
                         "curl", "-s", "-X", "POST",
                         "https://storage.matcha-bookable.com/api/logs",
-                        "-F", f"bookingID={int(os.environ.get('BOOKINGID'))}",
+                        "-F", f"bookingID={BOOKINGID}",
                         "-F", f"file=@{f}",
-                        "-H", f"Authorization: Bearer {os.environ.get('MATCHA_API_KEY')}"
+                        "-H", f"Authorization: Bearer {MATCHA_API_KEY}"
                     ])
             
             self.send_response(200)
             self.send_header('Content-Type', 'application/json')
             self.end_headers()
             self.wfile.write(b'{"status":"success"}')
+            return
         else:
             status = 401 if self.path == '/upload-storage' else 404
             message = b'{"status":"unauthorized"}' if self.path == '/upload-storage' else b'{"status":"not found"}'

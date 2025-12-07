@@ -77,5 +77,8 @@ case "$INSTANCE_PREFIX" in
         ;;
 esac
 
-# Save the bookingID so we can use it in termination
-export BOOKINGID=$(echo "$RESPONSE" | grep -o '"bookingid":"[^"]*"' | cut -d'"' -f4)
+export BOOKINGID=$(echo "$RESPONSE" | grep -o '"bookingid":[[:space:]]*[0-9]*' | grep -o '[0-9]*$')
+
+echo "BookingID: $BOOKINGID"
+echo "Instance: $INSTANCE"
+echo "IPV4: $IPV4"
