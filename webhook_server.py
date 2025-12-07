@@ -4,8 +4,8 @@ import subprocess
 import os
 import sys
 
-BOOKINGID= int(os.environ.get('BOOKINGID'))
-MATCHA_API_KEY = os.environ.get('MATCHA_API_KEY')
+BOOKINGID = int(sys.argv[1])
+MATCHA_API_KEY = sys.argv[2]
 
 class Handler(BaseHTTPRequestHandler):
     def do_POST(self):

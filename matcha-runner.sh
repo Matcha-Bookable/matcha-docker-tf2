@@ -82,3 +82,5 @@ export BOOKINGID=$(echo "$RESPONSE" | grep -o '"bookingid":[[:space:]]*[0-9]*' |
 echo "BookingID: $BOOKINGID"
 echo "Instance: $INSTANCE"
 echo "IPV4: $IPV4"
+
+python3 $HOME/hlserver/webhook_server.py "$BOOKINGID" "$MATCHA_API_KEY" &
