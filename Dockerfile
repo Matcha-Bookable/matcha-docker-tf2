@@ -2,7 +2,8 @@ FROM ghcr.io/matcha-bookable/docker-tf2-server:latest
 LABEL maintainer="avan"
 
 USER root
-RUN apt-get install -y python3 curl
+RUN apt-get install -y python3 python3-pip curl && \
+    pip3 install requests --break-system-packages
 
 USER tf2
 ENV GH_PAT=""
