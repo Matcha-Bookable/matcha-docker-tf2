@@ -8,12 +8,13 @@ USER tf2
 ENV GH_PAT=""
 ENV MATCHA_API_KEY=""
 
-ADD --chown=tf2:tf2 ./sourcemod.sh ./matcha-build.sh ./matcha-runner.sh ./webhook_server.py ./tf.sh $SERVER/
+ADD --chown=tf2:tf2 ./sourcemod.sh ./matcha-build.sh ./matcha-runner.sh ./webhook_server.py ./tf.sh ./parse_demo $SERVER/
 
 RUN chmod +x $SERVER/sourcemod.sh \
 	$SERVER/matcha-build.sh \
 	$SERVER/matcha-runner.sh \
-	$SERVER/tf.sh
+	$SERVER/tf.sh \
+	$SERVER/parse_demo 
 	
 RUN echo "=== Starting sourcemod.sh ===" && \
 	$SERVER/sourcemod.sh && \
