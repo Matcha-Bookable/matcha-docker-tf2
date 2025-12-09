@@ -75,7 +75,7 @@ rm demo_check.zip
 rm $HOME/hlserver/tf2/tf/addons/sourcemod/plugins/demo_check_no_discord.smx
 
 # StAC-tf2 (sapphonie/StAC-tf2)
-wget -nv https://github.com/sapphonie/StAC-tf2/releases/download/v6.3.7/stac.zip
+wget -nv https://github.com/sapphonie/StAC-tf2/releases/download/v6.3.8/stac.zip
 unzip -o stac.zip
 rm stac.zip
 
@@ -111,7 +111,7 @@ rm steamworks.tar.gz
 
 # neocurl (sapphonie/SM-neocurl-ext)
 cd $HOME/hlserver/tf2/tf/addons/sourcemod
-wget -nv "https://github.com/sapphonie/SM-neocurl-ext/releases/download/v2.0.0-beta/sm-neocurl.zip"
+wget -nv "https://github.com/sapphonie/SM-neocurl-ext/releases/download/v2.0.1-beta1/sm-neocurl-repack.zip"
 unzip -o sm-neocurl.zip
 rm sm-neocurl.zip
 
