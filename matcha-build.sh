@@ -112,8 +112,8 @@ rm steamworks.tar.gz
 # neocurl (sapphonie/SM-neocurl-ext)
 cd $HOME/hlserver/tf2/tf/addons/sourcemod
 wget -nv "https://github.com/sapphonie/SM-neocurl-ext/releases/download/v2.0.1-beta1/sm-neocurl-repack.zip"
-unzip -o sm-neocurl.zip
-rm sm-neocurl.zip
+unzip -o sm-neocurl-repack.zip
+rm sm-neocurl-repack.zip
 
 
 # CLEAN UP
