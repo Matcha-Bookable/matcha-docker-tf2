@@ -1,10 +1,11 @@
-name: Build and Push (Production)
+name: Build and Push  (Production)
 on:
   push:
     branches: [ main ]
     paths:
       - 'Dockerfile'
       - '*.sh'
+      - '*.yaml'
   workflow_dispatch:
   repository_dispatch:
     types: [update]  
@@ -107,7 +108,10 @@ jobs:
               --provisioning-model=SPOT \
               --instance-termination-action=STOP \
               --tags=tf2 \
-              --create-disk=auto-delete=yes,boot=yes,device-name=update-runner,image=projects/fresh-ocean-422212-c6/global/images/matcha-docker-tf2,mode=rw,size=15,type=pd-balanced \
+              --image-family=matcha-docker-tf2 \
+              --image-project=fresh-ocean-422212-c6 \
+              --boot-disk-size=15GB \
+              --boot-disk-type=pd-balanced \
               --verbosity=info \
 
           echo "GCE instance created."
