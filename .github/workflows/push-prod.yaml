@@ -108,8 +108,8 @@ jobs:
               --provisioning-model=SPOT \
               --instance-termination-action=STOP \
               --tags=tf2 \
-              --image-family=matcha-docker-tf2 \
-              --image-project=fresh-ocean-422212-c6 \
+              --image-family=cos-stable \
+              --image-project=cos-cloud \
               --boot-disk-size=15GB \
               --boot-disk-type=pd-balanced \
               --verbosity=info \
@@ -153,7 +153,7 @@ jobs:
               --zone=asia-southeast1-a \
               --project=fresh-ocean-422212-c6 \
               --verbosity=info \
-              --command="docker pull ghcr.io/matcha-bookable/matcha-docker-tf2:latest ; echo DONE:\$?"
+              --command="docker pull ghcr.io/matcha-bookable/matcha-docker-tf2:latest && exit 0 || exit 1"
 
           if [ $? -ne 0 ]; then
               echo "Error pulling docker image."
