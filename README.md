@@ -8,6 +8,7 @@ This image will be pulled by the on-demand instances from Matcha Bookable's Comp
 
 - [x] Docker Hub: Public Repository
 - [x] Github Container Registry
+- [x] Vultr Container Registry (SGP)
 
 ## Additional Notes
 
