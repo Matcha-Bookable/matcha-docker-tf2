@@ -13,7 +13,7 @@ on:
 env:
   DOCKERHUB_REPO: avanavan/matcha-docker-tf2
   GHCR_REPO: ghcr.io/${{ github.repository }}
-  VULTR_REPO: sgp.vultrcr.com/matcha/match-docker-tf2
+  VULTR_REPO: sgp.vultrcr.com/matcha/matcha-docker-tf2
 
 jobs:
   build-and-push:
