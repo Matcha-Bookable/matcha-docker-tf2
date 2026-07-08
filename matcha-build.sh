@@ -44,7 +44,7 @@ rm -r SOAP-TF2DM-master
 rm soap-dm.zip
 
 # tf2-comp-fixes (ldesgoui/tf2-comp-fixes)
-wget -nv https://github.com/ldesgoui/tf2-comp-fixes/releases/download/v1.16.19/tf2-comp-fixes.zip
+wget -nv https://github.com/ldesgoui/tf2-comp-fixes/releases/download/v1.18.1/tf2-comp-fixes.zip
 unzip -o tf2-comp-fixes.zip
 rm tf2-comp-fixes.zip
 
@@ -75,7 +75,7 @@ rm demo_check.zip
 rm $HOME/hlserver/tf2/tf/addons/sourcemod/plugins/demo_check_no_discord.smx
 
 # StAC-tf2 (sapphonie/StAC-tf2)
-wget -nv https://github.com/sapphonie/StAC-tf2/releases/download/v6.3.8/stac.zip
+wget -nv https://github.com/sapphonie/StAC-tf2/releases/download/v6.3.9/stac.zip
 unzip -o stac.zip
 rm stac.zip
 
