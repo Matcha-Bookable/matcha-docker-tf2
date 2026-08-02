@@ -2,8 +2,12 @@
 
 # Repository
 GITHUB_USER="github-actions[bot]"
-GIT_URL_PLUGINS="https://${GITHUB_USER}:${GH_PAT}@github.com/Matcha-Bookable/matcha-plugins-tf2.git"
-GIT_URL_CFGS="https://${GITHUB_USER}:${GH_PAT}@github.com/Matcha-Bookable/matcha-cfgs-tf2.git"
+# Credentialed URLs are used only transiently for clone/pull; the PAT must
+# never persist in .git/config (see the set-url resets below)
+GIT_URL_PLUGINS_AUTH="https://${GITHUB_USER}:${GH_PAT}@github.com/Matcha-Bookable/matcha-plugins-tf2.git"
+GIT_URL_CFGS_AUTH="https://${GITHUB_USER}:${GH_PAT}@github.com/Matcha-Bookable/matcha-cfgs-tf2.git"
+GIT_URL_PLUGINS="https://github.com/Matcha-Bookable/matcha-plugins-tf2.git"
+GIT_URL_CFGS="https://github.com/Matcha-Bookable/matcha-cfgs-tf2.git"
 
 # Directories
 TF_DIR="$HOME/hlserver/tf2/tf"
@@ -16,25 +20,30 @@ MATCHA_CFG_REPO="$ROOT_MATCHA_REPO/matcha-cfgs-tf2"
 # Pull all matcha's plugins
 if [ ! -d $MATCHA_PLUGINS_REPO ]; then
     mkdir -p $MATCHA_PLUGINS_REPO
-    git clone "$GIT_URL_PLUGINS" $MATCHA_PLUGINS_REPO
+    git clone "$GIT_URL_PLUGINS_AUTH" $MATCHA_PLUGINS_REPO
 fi
 
 # Pull all matcha's cfgs
 if [ ! -d $MATCHA_CFG_REPO ]; then
     mkdir -p $MATCHA_CFG_REPO
-    git clone "$GIT_URL_CFGS" $MATCHA_CFG_REPO
+    git clone "$GIT_URL_CFGS_AUTH" $MATCHA_CFG_REPO
 fi
 
 cd "$MATCHA_PLUGINS_REPO"
-git remote set-url origin "$GIT_URL_PLUGINS"
+git remote set-url origin "$GIT_URL_PLUGINS_AUTH"
 git pull
+git remote set-url origin "$GIT_URL_PLUGINS"
 
 cd "$MATCHA_CFG_REPO"
-git remote set-url origin "$GIT_URL_CFGS"
+git remote set-url origin "$GIT_URL_CFGS_AUTH"
 git pull
+git remote set-url origin "$GIT_URL_CFGS"
 
 cp -rT $MATCHA_PLUGINS_REPO $SM_DIR
 cp -rT $MATCHA_CFG_REPO $TF_CFG_DIR
+# the copied trees must not carry .git (its config can hold credentials, and
+# nothing under the game dir should be a git repo)
+rm -rf "$SM_DIR/.git" "$TF_CFG_DIR/.git"
 
 # Dynamic pull (plugins that updates frequently)
 cd $SM_DIR/plugins
