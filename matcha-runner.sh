@@ -46,7 +46,7 @@ cp -rT $MATCHA_CFG_REPO $TF_CFG_DIR
 rm -rf "$SM_DIR/.git" "$TF_CFG_DIR/.git"
 
 # For vscript, we need to move it out from TF_CFG_DIR
-mv $TF_CFG_DIR/scripts $TF_DIR
+cp -rT $TF_CFG_DIR/scripts $TF_DIR/scripts
 
 # Dynamic pull (plugins that updates frequently)
 cd $SM_DIR/plugins
