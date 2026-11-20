@@ -118,6 +118,14 @@ wget -nv "https://github.com/sapphonie/SM-neocurl-ext/releases/download/v2.0.1-b
 unzip -o sm-neocurl-repack.zip
 rm sm-neocurl-repack.zip
 
+# SourceTV Manager (peace-maker/sourcetvmanager)
+# Optional for waitforstv: gives live STV viewer counts instead of polling tv_status.
+# Autoloaded by waitforstv; build must match the SourceMod branch from sourcemod.sh (stable = 1.12)
+cd $HOME/hlserver/tf2/tf
+wget -nv "https://github.com/peace-maker/sourcetvmanager/releases/download/v1.3-beta1/sourcetvmanager-sm1.12-linux-v1.3-beta1.tar.gz" -O "sourcetvmanager.tar.gz"
+tar -xzf sourcetvmanager.tar.gz
+rm sourcetvmanager.tar.gz
+
 
 # CLEAN UP
 echo "=== Cleaning up Directories ==="
