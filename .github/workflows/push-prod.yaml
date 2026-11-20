@@ -62,6 +62,70 @@ jobs:
             type=ref,event=pr
             type=raw,value=latest,enable={{is_default_branch}}
 
+      # Each push moves the main/latest tags to the new image, leaving the previous
+      # image untagged but still counted against the VCR storage quota. Delete those
+      # leftovers before pushing so the registry doesn't fill up.
+      - name: Free space in Vultr registry
+        continue-on-error: true
+        env:
+          VULTR_API_KEY: ${{ secrets.MATCHA_VULTR_API_KEY }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${VULTR_API_KEY:-}" ]; then
+            echo "::warning::MATCHA_VULTR_API_KEY secret is not set; skipping Vultr registry cleanup"
+            exit 0
+          fi
+
+          API="${VULTR_API_URL:-https://api.vultr.com/v2}"
+          api() {
+            local out
+            if ! out=$(curl -sS --fail-with-body --retry 3 -H "Authorization: Bearer ${VULTR_API_KEY}" "$@"); then
+              echo "Vultr API request failed: ${out}" >&2
+              return 1
+            fi
+            printf '%s\n' "$out"
+          }
+
+          # sgp.vultrcr.com/matcha/matcha-docker-tf2 -> urn "sgp.vultrcr.com/matcha", image "matcha-docker-tf2"
+          REGISTRY_URN="${VULTR_REPO%/*}"
+          IMAGE="${VULTR_REPO##*/}"
+
+          REGISTRY_ID=$(api "$API/registries?per_page=100" \
+            | jq -r --arg urn "$REGISTRY_URN" 'first(.registries[] | select(.urn == $urn) | .id) // empty')
+          if [ -z "$REGISTRY_ID" ]; then
+            echo "::error::No Vultr registry found with URN $REGISTRY_URN"
+            exit 1
+          fi
+
+          print_storage() {
+            api "$API/registry/$REGISTRY_ID" | jq -r \
+              '"Storage used: \(.storage.used.mb | floor) / \(.storage.allowed.mb | floor) MB (as of \(.storage.used.updated_at))"'
+          }
+          print_storage
+
+          digests=()
+          cursor=""
+          while :; do
+            query=(--data-urlencode "per_page=100")
+            [ -n "$cursor" ] && query+=(--data-urlencode "cursor=$cursor")
+            page=$(api -G "$API/registry/$REGISTRY_ID/repository/$IMAGE/artifacts" "${query[@]}")
+            mapfile -t -O "${#digests[@]}" digests < <(jq -r '.artifacts[]? | select((.tags // []) | length == 0) | .digest' <<<"$page")
+            cursor=$(jq -r '.meta.links.next // empty' <<<"$page")
+            [ -n "$cursor" ] || break
+          done
+
+          echo "Found ${#digests[@]} untagged artifact(s) in $IMAGE"
+          for digest in "${digests[@]}"; do
+            if api -X DELETE "$API/registry/$REGISTRY_ID/repository/$IMAGE/artifact/$digest" > /dev/null; then
+              echo "Deleted $digest"
+            else
+              echo "::warning::Failed to delete $digest"
+            fi
+          done
+
+          print_storage
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
