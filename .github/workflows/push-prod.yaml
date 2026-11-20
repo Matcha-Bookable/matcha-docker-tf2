@@ -104,19 +104,34 @@ jobs:
           }
           print_storage
 
-          # The registry endpoints reject paging params (per_page/cursor return 422),
-          # so re-list after each batch of deletions until no untagged artifacts remain
+          # The artifact endpoints take the repository's "image" value from List Repositories
+          repos=$(api "$API/registry/$REGISTRY_ID/repositories")
+          REPO_IMAGE=$(jq -r --arg img "$IMAGE" --arg full "${REGISTRY_URN#*/}/$IMAGE" \
+            'first(.repositories[]? | select(.name == $full or .name == $img or .image == $img) | .image) // empty' <<<"$repos")
+          if [ -z "$REPO_IMAGE" ]; then
+            echo "::error::Repository $IMAGE not found; registry has: $(jq -c '[.repositories[]? | {name, image}]' <<<"$repos")"
+            exit 1
+          fi
+          jq -r --arg ri "$REPO_IMAGE" \
+            '.repositories[] | select(.image == $ri) | "Repository \(.name) (image \(.image)): \(.artifact_count) artifact(s)"' <<<"$repos"
+          IMAGE_PATH=$(jq -rn --arg v "$REPO_IMAGE" '$v | @uri')
+
+          # Paging is not reliable on these endpoints, so re-list after each batch of
+          # deletions until no untagged artifacts remain
           declare -A failed=()
           deleted=0
           for round in $(seq 1 50); do
-            page=$(api "$API/registry/$REGISTRY_ID/repository/$IMAGE/artifacts")
+            if ! page=$(api "$API/registry/$REGISTRY_ID/repository/$IMAGE_PATH/artifacts"); then
+              echo "::error::Listing artifacts for repository image '$REPO_IMAGE' failed"
+              exit 1
+            fi
             echo "Round $round: listed $(jq '.artifacts | length' <<<"$page") artifact(s) (total $(jq '.meta.total // "?"' <<<"$page"))"
             mapfile -t digests < <(jq -r '.artifacts[]? | select((.tags // []) | length == 0) | .digest' <<<"$page")
 
             progress=0
             for digest in "${digests[@]}"; do
               [ -z "${failed[$digest]:-}" ] || continue
-              if api -X DELETE "$API/registry/$REGISTRY_ID/repository/$IMAGE/artifact/$digest" > /dev/null; then
+              if api -X DELETE "$API/registry/$REGISTRY_ID/repository/$IMAGE_PATH/artifact/$digest" > /dev/null; then
                 echo "Deleted $digest"
                 deleted=$((deleted + 1))
                 progress=1
