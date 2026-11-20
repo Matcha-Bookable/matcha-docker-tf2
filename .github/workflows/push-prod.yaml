@@ -104,26 +104,31 @@ jobs:
           }
           print_storage
 
-          digests=()
-          cursor=""
-          while :; do
-            query=(--data-urlencode "per_page=100")
-            [ -n "$cursor" ] && query+=(--data-urlencode "cursor=$cursor")
-            page=$(api -G "$API/registry/$REGISTRY_ID/repository/$IMAGE/artifacts" "${query[@]}")
-            mapfile -t -O "${#digests[@]}" digests < <(jq -r '.artifacts[]? | select((.tags // []) | length == 0) | .digest' <<<"$page")
-            cursor=$(jq -r '.meta.links.next // empty' <<<"$page")
-            [ -n "$cursor" ] || break
+          # The registry endpoints reject paging params (per_page/cursor return 422),
+          # so re-list after each batch of deletions until no untagged artifacts remain
+          declare -A failed=()
+          deleted=0
+          for round in $(seq 1 50); do
+            page=$(api "$API/registry/$REGISTRY_ID/repository/$IMAGE/artifacts")
+            echo "Round $round: listed $(jq '.artifacts | length' <<<"$page") artifact(s) (total $(jq '.meta.total // "?"' <<<"$page"))"
+            mapfile -t digests < <(jq -r '.artifacts[]? | select((.tags // []) | length == 0) | .digest' <<<"$page")
+
+            progress=0
+            for digest in "${digests[@]}"; do
+              [ -z "${failed[$digest]:-}" ] || continue
+              if api -X DELETE "$API/registry/$REGISTRY_ID/repository/$IMAGE/artifact/$digest" > /dev/null; then
+                echo "Deleted $digest"
+                deleted=$((deleted + 1))
+                progress=1
+              else
+                echo "::warning::Failed to delete $digest"
+                failed[$digest]=1
+              fi
+            done
+            [ "$progress" -eq 1 ] || break
           done
 
-          echo "Found ${#digests[@]} untagged artifact(s) in $IMAGE"
-          for digest in "${digests[@]}"; do
-            if api -X DELETE "$API/registry/$REGISTRY_ID/repository/$IMAGE/artifact/$digest" > /dev/null; then
-              echo "Deleted $digest"
-            else
-              echo "::warning::Failed to delete $digest"
-            fi
-          done
-
+          echo "Deleted $deleted untagged artifact(s) from $IMAGE"
           print_storage
 
       - name: Build and push Docker image
