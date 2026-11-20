@@ -83,7 +83,7 @@ rm stac.zip
 # F2s (F2/F2s-sourcemod-plugins)
 cd $HOME/hlserver/tf2/tf/addons/sourcemod/plugins
 
-wget -nv "$(curl -s https://api.github.com/repos/F2/F2s-sourcemod-plugins/releases/latest | grep -o 'https://github.com/F2/F2s-sourcemod-plugins/releases/download/[^"]*f2-sourcemod-plugins.zip')"
+wget -nv https://github.com/F2/F2s-sourcemod-plugins/releases/latest/download/f2-sourcemod-plugins.zip
 unzip -o f2-sourcemod-plugins.zip
 rm f2-sourcemod-plugins.zip
 
